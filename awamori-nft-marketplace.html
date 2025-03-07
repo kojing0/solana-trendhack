@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JUKUSEI - 泡盛NFTマーケットプレイス</title>
+  <style>
+    :root {
+      --primary: #e67e22;      /* 琉球オレンジ */
+      --secondary: #3498db;    /* 沖縄の海 */
+      --dark: #2c3e50;         /* ダークブルー */
+      --light: #f9f9f9;        /* オフホワイト */
+      --accent: #e74c3c;       /* 赤瓦 */
+      --accent-light: #f39c12; /* ヒビスカス */
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --success: #27ae60;      /* グリーン */
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--dark);
+      color: var(--light);
+      background-image: 
+        linear-gradient(45deg, rgba(230, 126, 34, 0.1) 0%, transparent 70%),
+        linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, transparent 70%);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header */
+    header {
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      background-color: rgba(44, 62, 80, 0.8);
+      z-index: 100;
+      border-bottom: 1px solid var(--card-border);
+    }
+    
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-icon {
+      font-size: 1.6rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .nav-links a {
+      color: var(--light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--primary);
+      transition: width 0.3s;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .btn {
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--secondary), #2980b9);
+      color: white;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--light);
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 100px 0;
+      text-align: center;
+      background-image: url('https://story.nakagawa-masashichi.jp/wp-content/uploads/2018/06/kosyuTOP01.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      border-radius: 0 0 20px 20px;
+      margin-bottom: 50px;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(44, 62, 80, 0.7), rgba(44, 62, 80, 0.9));
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--primary), var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Featured Section */
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 40px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+    }
+    
+    .section-subtitle {
+      text-align: center;
+      margin-top: -30px;
+      margin-bottom: 40px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .featured {
+      padding: 80px 0;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    
+    .tab {
+      padding: 15px 30px;
+      cursor: pointer;
+      position: relative;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s;
+    }
+    
+    .tab.active {
+      color: var(--primary);
+    }
+    
+    .tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--primary);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    
+    .tab.active::after {
+      transform: scaleX(1);
+    }
+    
+    .tab:hover {
+      color: var(--primary);
+    }
+    
+    /* NFT Cards Grid */
+    .nft-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    
+    .nft-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(5px);
+    }
+    
+    .nft-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .nft-image {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+    }
+    
+    .nft-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    
+    .nft-card:hover .nft-image img {
+      transform: scale(1.05);
+    }
+    
+    .nft-tag {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(231, 76, 60, 0.9);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .nft-info {
+      padding: 20px;
+    }
+    
+    .nft-title {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    
+    .nft-distillery {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .distillery-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+    
+    .distillery-name {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .nft-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    
+    .detail {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .detail span {
+      display: block;
+      font-size: 1rem;
+      color: var(--light);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+    
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--card-border);
+    }
+    
+    .price {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+    
+    /* Staking Section */
+    .staking {
+      padding: 80px 0;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      margin-bottom: 80px;
+    }
+    
+    .staking-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .staking-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid var(--card-border);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .staking-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .staking-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .staking-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+    }
+    
+    .staking-title {
+      font-size: 1.3rem;
+      margin-bottom: 5px;
+    }
+    
+    .staking-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+    
+    .staking-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .staking-progress {
+      margin-bottom: 20px;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      width: 65%;
+    }
+    
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .staking-input-group {
+      margin-bottom: 20px;
+    }
+    
+    .staking-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .staking-input {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 15px;
+      color: var(--light);
+      margin-bottom: 5px;
+    }
+    
+    .input-suffix {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+    
+    .max-button {
+      color: var(--primary);
+      cursor: pointer;
+    }
+    
+    .staking-action {
+      display: flex;
+      justify-content: center;
+    }
+    
+    /* Collections Section */
+    .collections {
+      padding: 80px 0;
+    }
+    
+    .collection-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .collection-tab {
+      padding: 8px 20px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.9rem;
+    }
+    
+    .collection-tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+    }
+    
+    .collection-tab:hover:not(.active) {
+      border-color: var(--primary);
+    }
+    
+    /* How it works */
+    .how-it-works {
+      padding: 80px 0;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+    }
+    
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .step {
+      flex: 1;
+      min-width: 250px;
+      text-align: center;
+      padding: 30px;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .step:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .step-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+    }
+    
+    .step h3 {
+      margin-bottom: 15px;
+    }
+    
+    /* Statistics Section */
+    .statistics {
+      padding: 80px 0;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+    }
+    
+    .stat-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      border: 1px solid var(--card-border);
+      transition: transform 0.3s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .stat-card h3 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-card p {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    /* Footer */
+    footer {
+      padding: 50px 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-top: 1px solid var(--card-border);
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+    
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .footer-section h3 {
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--light);
+      transition: all 0.3s;
+      border: 1px solid var(--card-border);
+    }
+    
+    .social-icon:hover {
+      background-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .copyright {
+      margin-top: 50px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    .modal {
+      width: 90%;
+      max-width: 500px;
+      background-color: var(--dark);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transform: translateY(50px);
+      transition: all 0.3s;
+      border: 1px solid var(--card-border);
+    }
+    
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .modal-close {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.7);
+      transition: color 0.3s;
+    }
+    
+    .modal-close:hover {
+      color: var(--accent);
+    }
+    
+    .modal-content {
+      padding: 20px;
+    }
+    
+    .modal-nft {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .modal-nft-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .modal-nft-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .modal-nft-info h4 {
+      margin-bottom: 5px;
+    }
+    
+    .modal-nft-details {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+    
+    .modal-price {
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 10px;
+    }
+    
+    .modal-divider {
+      height: 1px;
+      background-color: var(--card-border);
+      margin: 20px 0;
+    }
+    
+    .modal-form-group {
+      margin-bottom: 20px;
+    }
+    
+    .modal-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .modal-input {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 15px;
+      color: var(--light);
+    }
+    
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .steps {
+        flex-direction: column;
+      }
+      
+      .tab {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+    }
+    
+    /* Success message */
+    .success-message {
+      background-color: rgba(39, 174, 96, 0.2);
+      border: 1px solid var(--success);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .success-icon {
+      color: var(--success);
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          JUKUSEI
+        </div>
+        <div class="nav-links">
+          <a href="#">泡盛について</a>
+          <a href="#">酒造所</a>
+          <a href="#">マーケットプレイス</a>
+          <a href="#">ステーキング</a>
+        </div>
+        <div class="nav-buttons">
+          <button class="btn btn-outline">ウォレット接続</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>泡盛をNFTで体験する新しい形</h1>
+      <p>伝統的な沖縄の泡盛をデジタルアートとして所有し、ステーキングで報酬を獲得。実際の泡盛製品と交換可能な唯一無二のNFTコレクション。</p>
+      <div class="nav-buttons">
+        <button class="btn btn-primary">NFTを探す</button>
+        <button class="btn btn-secondary">ステーキングを始める</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="featured">
+    <div class="container">
+      <h2 class="section-title">泡盛 NFT コレクション</h2>
+      <p class="section-subtitle">各NFTは限定泡盛ボトルと交換可能な固有のデジタルアートです</p>
+      
+      <div class="tabs">
+        <div class="tab active">すべて</div>
+        <div class="tab">古酒（クース）</div>
+        <div class="tab">プレミアム</div>
+        <div class="tab">限定版</div>
+        <div class="tab">コラボレーション</div>
+      </div>
+      
+      <div class="nft-grid">
+        <div class="nft-card">
+          <div class="nft-image">
+            <img src="https://taragawa.co.jp/s/wp-content/uploads/2021/07/pdct_3ocho1.jpg" alt="泡盛 NFT 1">
+            <div class="nft-tag">限定版</div>
+          </div>
+          <div class="nft-info">
+            <h3 class="nft-title">琉球王朝 - 10年古酒</h3>
+            <div class="nft-distillery">
+              <div class="distillery-avatar">H</div>
+              <span class="distillery-name">比嘉酒造</span>
+            </div>
+            <div class="nft-details">
+              <div class="detail">
+                アルコール度数
+                <span>43%</span>
+              </div>
+              <div class="detail">
+                熟成年数
+                <span>20年</span>
+              </div>
+              <div class="detail">
+                残り数
+                <span>1/1</span>
+              </div>
+            </div>
+            <div class="nft-details">
+              <div class="detail">
+                サイズ
+                <span>瓶 1,800ml</span>
+              </div>
+            </div>
+            <div class="price-row">
+              <span class="price">1.2 Sol</span>
+              <button class="btn btn-primary btn-sm">購入</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="nft-card">
+          <div class="nft-image">
+            <img src="https://www.k-kumesen.co.jp/userfiles/images/30_1800.jpeg" alt="泡盛 NFT 2">
+          </div>
+          <div class="nft-info">
+            <h3 class="nft-title">久米仙 - 20年古酒</h3>
+            <div class="nft-distillery">
+              <div class="distillery-avatar">K</div>
+              <span class="distillery-name">久米島酒造</span>
+            </div>
+            <div class="nft-details">
+              <div class="detail">
+                アルコール度数
+                <span>40%</span>
+              </div>
+              <div class="detail">
+                熟成年数
+                <span>10年</span>
+              </div>
+              <div class="detail">
+                残り数
+                <span>36/50</span>
+              </div>
+            </div>
+            <div class="nft-details">
+              <div class="detail">
+                サイズ
+                <span>グラス 30ml</span>
+              </div>
+            </div>
+            <div class="price-row">
+              <span class="price">2.8 Sol</span>
+              <button class="btn btn-primary btn-sm">購入</button>
+            </div>
+          </div>
